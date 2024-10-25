@@ -1,0 +1,25 @@
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+local UIS = game:GetService("UserInputService")
+
+local dashDistance = 5 -- Distance to dash in studs
+local dashCooldown = 1 -- Cooldown time in seconds
+local canDash = true
+
+local function dash()
+    if canDash then
+        canDash = false
+        local direction = character.HumanoidRootPart.CFrame.LookVector -- Direction to dash
+        character.HumanoidRootPart.CFrame = character.HumanoidRootPart.CFrame + (direction * dashDistance)
+
+        wait(dashCooldown) -- Wait for cooldown
+        canDash = true
+    end
+end
+
+UIS.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Space then
+        dash() -- Dash when the space key is pressed
+    end
+end)
